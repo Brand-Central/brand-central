@@ -3,6 +3,7 @@ import { ArrowRight, Quote } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import AnimatedText from '@/components/ui/AnimatedText';
 import { Button } from '@/components/ui/button';
+import { Helmet } from 'react-helmet';
 
 const testimonials = [
   {
@@ -55,21 +56,24 @@ const caseStudies = [
     title: "Reducing Product Returns for a Major Electronics Retailer",
     description: "Through our comprehensive quality control program, we helped a major electronics retailer reduce product returns by 35% within six months, resulting in significant cost savings and improved customer satisfaction.",
     tags: ["Electronics", "Quality Control", "Return Reduction"],
-    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop",
+    link: "/case-study-1"
   },
   {
     id: 2,
     title: "Ensuring Compliance for a Global Beauty Brand",
     description: "Our compliance assessment services helped a global beauty brand identify and address potential regulatory issues before launching in new markets, ensuring smooth market entry and avoiding costly delays.",
     tags: ["Beauty", "Compliance", "Global Markets"],
-    image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?q=80&w=2070&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?q=80&w=2070&auto=format&fit=crop",
+    link: "/case-study-2"
   },
   {
     id: 3,
     title: "Improving Product Quality for a Home Goods Manufacturer",
     description: "By implementing our test-buying program, a home goods manufacturer was able to identify and resolve several quality issues, resulting in a 40% decrease in negative reviews and a 25% increase in customer satisfaction scores.",
     tags: ["Home Goods", "Quality Improvement", "Customer Satisfaction"],
-    image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=1994&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=1994&auto=format&fit=crop",
+    link: "/case-study-3"
   }
 ];
 
@@ -95,22 +99,27 @@ const StarRating = ({ rating }: { rating: number }) => {
 const CaseStudies = () => {
   return (
     <main className="pt-24">
+      <Helmet>
+        <title>Case Studies & Testimonials | Brandcentral</title>
+        <meta name="description" content="Read how Brandcentral has helped businesses improve product quality and customer satisfaction through our quality control services." />
+      </Helmet>
+      
       {/* Hero Section */}
-      <section className="py-20 md:py-28 bg-brandcentral-50 relative overflow-hidden">
+      <section className="py-24 md:py-32 bg-brandcentral-50 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-radial from-white to-transparent opacity-50 pointer-events-none"></div>
         <div className="container relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-block px-3 py-1 mb-6 text-sm font-medium text-brandcentral-accent bg-white rounded-full animate-fade-in">
               Success Stories
             </div>
-            <h1 className="text-4xl md:text-5xl font-semibold mb-6 tracking-tight">
+            <h1 className="text-4xl md:text-5xl font-semibold mb-8 tracking-tight">
               <AnimatedText
                 text="Case Studies & Testimonials"
                 tag="h1"
                 delay={100}
               />
             </h1>
-            <p className="text-lg text-brandcentral-600 mb-8 max-w-2xl mx-auto animate-fade-in opacity-0" style={{ animationDelay: '400ms' }}>
+            <p className="text-lg text-brandcentral-600 mb-10 max-w-2xl mx-auto animate-fade-in opacity-0" style={{ animationDelay: '400ms' }}>
               Discover how our quality control services have helped businesses across various industries improve their products and build customer trust.
             </p>
           </div>
@@ -118,13 +127,13 @@ const CaseStudies = () => {
       </section>
 
       {/* Case Studies */}
-      <section className="py-20 bg-white">
+      <section className="py-24 bg-white">
         <div className="container">
-          <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="text-center max-w-3xl mx-auto mb-20">
             <div className="inline-block px-3 py-1 mb-4 text-xs font-medium text-brandcentral-accent bg-brandcentral-50 rounded-full">
               Case Studies
             </div>
-            <h2 className="text-3xl md:text-4xl font-semibold mb-4">
+            <h2 className="text-3xl md:text-4xl font-semibold mb-6">
               <AnimatedText
                 text="Real-world impact for our clients"
                 tag="h2"
@@ -135,7 +144,7 @@ const CaseStudies = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
             {caseStudies.map((study) => (
               <div key={study.id} className="bg-white border border-brandcentral-100 rounded-lg overflow-hidden shadow-subtle transition-custom hover:shadow-elevated">
                 <div className="h-48 bg-brandcentral-100 relative">
@@ -146,7 +155,7 @@ const CaseStudies = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-tr from-brandcentral-800/30 to-transparent"></div>
                 </div>
-                <div className="p-6">
+                <div className="p-8">
                   <div className="flex flex-wrap gap-2 mb-4">
                     {study.tags.map((tag) => (
                       <span key={tag} className="px-2 py-1 text-xs font-medium bg-brandcentral-50 text-brandcentral-600 rounded-full">
@@ -154,11 +163,11 @@ const CaseStudies = () => {
                       </span>
                     ))}
                   </div>
-                  <h3 className="text-xl font-medium mb-2">{study.title}</h3>
-                  <p className="text-brandcentral-600 mb-4">{study.description}</p>
-                  <button className="text-brandcentral-accent font-medium inline-flex items-center hover:underline">
+                  <h3 className="text-xl font-medium mb-3">{study.title}</h3>
+                  <p className="text-brandcentral-600 mb-6">{study.description}</p>
+                  <Link to={study.link} className="text-brandcentral-accent font-medium inline-flex items-center hover:underline">
                     Read full case study <ArrowRight className="ml-1 h-4 w-4" />
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))}
@@ -167,13 +176,13 @@ const CaseStudies = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 bg-brandcentral-50">
+      <section className="py-24 bg-brandcentral-50">
         <div className="container">
-          <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="text-center max-w-3xl mx-auto mb-20">
             <div className="inline-block px-3 py-1 mb-4 text-xs font-medium text-brandcentral-accent bg-white rounded-full">
               Testimonials
             </div>
-            <h2 className="text-3xl md:text-4xl font-semibold mb-4">
+            <h2 className="text-3xl md:text-4xl font-semibold mb-6">
               <AnimatedText
                 text="What our clients say about us"
                 tag="h2"
@@ -184,11 +193,11 @@ const CaseStudies = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
             {testimonials.map((testimonial) => (
               <div key={testimonial.id} className="bg-white rounded-lg p-8 shadow-subtle transition-custom hover:shadow-elevated">
-                <Quote className="h-8 w-8 text-brandcentral-200 mb-4" />
-                <p className="text-brandcentral-700 mb-6 italic">"{testimonial.quote}"</p>
+                <Quote className="h-8 w-8 text-brandcentral-200 mb-6" />
+                <p className="text-brandcentral-700 mb-8 italic">"{testimonial.quote}"</p>
                 <div className="flex justify-between items-end">
                   <div>
                     <h4 className="font-medium">{testimonial.name}</h4>
@@ -203,16 +212,16 @@ const CaseStudies = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-brandcentral-900 text-white">
+      <section className="py-24 bg-brandcentral-900 text-white">
         <div className="container">
           <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-semibold mb-6">
+            <h2 className="text-3xl md:text-4xl font-semibold mb-8">
               <AnimatedText
                 text="Ready to become our next success story?"
                 tag="h2"
               />
             </h2>
-            <p className="text-brandcentral-200 mb-8 text-lg">
+            <p className="text-brandcentral-200 mb-10 text-lg">
               Contact us today to discuss how our quality control services can help your business achieve similar results.
             </p>
             <Link to="/contact">

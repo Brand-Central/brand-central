@@ -10,6 +10,9 @@ import PageTransition from "./components/ui/PageTransition";
 import Index from "./pages/Index";
 import Services from "./pages/Services";
 import CaseStudies from "./pages/CaseStudies";
+import CaseStudy1 from "./pages/CaseStudy1";
+import CaseStudy2 from "./pages/CaseStudy2";
+import CaseStudy3 from "./pages/CaseStudy3";
 import HowItWorks from "./pages/HowItWorks";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
@@ -37,6 +40,9 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/services" element={<Services />} />
             <Route path="/case-studies" element={<CaseStudies />} />
+            <Route path="/case-study-1" element={<CaseStudy1 />} />
+            <Route path="/case-study-2" element={<CaseStudy2 />} />
+            <Route path="/case-study-3" element={<CaseStudy3 />} />
             <Route path="/how-it-works" element={<HowItWorks />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<NotFound />} />

@@ -41,11 +41,11 @@ const Contact = () => {
         <meta name="description" content="Get in touch with Brandcentral for test-buying and product quality control services." />
       </Helmet>
 
-      <main className="pt-24 pb-16 relative">
+      <main className="pt-24 pb-20 relative">
         {/* Page Header */}
-        <section className="container mb-12 relative z-10">
+        <section className="container mb-16 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
               Get in Touch
             </h1>
             <p className="text-lg text-brandcentral-500 max-w-2xl mx-auto">
@@ -65,13 +65,13 @@ const Contact = () => {
         </div>
 
         <div className="container relative z-10">
-          <div className="grid md:grid-cols-2 gap-12 items-start max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-16 items-start max-w-5xl mx-auto">
             {/* Contact Form */}
-            <div className="bg-white p-8 rounded-lg shadow-subtle">
-              <h2 className="text-2xl font-semibold mb-6">Send us a message</h2>
+            <div className="bg-white p-10 rounded-lg shadow-subtle">
+              <h2 className="text-2xl font-semibold mb-8">Send us a message</h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-brandcentral-700 mb-1">
+                  <label htmlFor="name" className="block text-sm font-medium text-brandcentral-700 mb-2">
                     Name
                   </label>
                   <input
@@ -81,13 +81,13 @@ const Contact = () => {
                     required
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-brandcentral-200 rounded-md focus:ring-2 focus:ring-brandcentral-accent focus:border-transparent transition"
+                    className="w-full px-4 py-3 border border-brandcentral-200 rounded-md focus:ring-2 focus:ring-brandcentral-accent focus:border-transparent transition"
                     placeholder="Your name"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-brandcentral-700 mb-1">
+                  <label htmlFor="email" className="block text-sm font-medium text-brandcentral-700 mb-2">
                     Email
                   </label>
                   <input
@@ -97,13 +97,13 @@ const Contact = () => {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-brandcentral-200 rounded-md focus:ring-2 focus:ring-brandcentral-accent focus:border-transparent transition"
+                    className="w-full px-4 py-3 border border-brandcentral-200 rounded-md focus:ring-2 focus:ring-brandcentral-accent focus:border-transparent transition"
                     placeholder="your.email@company.com"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="company" className="block text-sm font-medium text-brandcentral-700 mb-1">
+                  <label htmlFor="company" className="block text-sm font-medium text-brandcentral-700 mb-2">
                     Company
                   </label>
                   <input
@@ -112,23 +112,23 @@ const Contact = () => {
                     type="text"
                     value={formData.company}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-brandcentral-200 rounded-md focus:ring-2 focus:ring-brandcentral-accent focus:border-transparent transition"
+                    className="w-full px-4 py-3 border border-brandcentral-200 rounded-md focus:ring-2 focus:ring-brandcentral-accent focus:border-transparent transition"
                     placeholder="Your company name"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-brandcentral-700 mb-1">
+                  <label htmlFor="message" className="block text-sm font-medium text-brandcentral-700 mb-2">
                     Message
                   </label>
                   <textarea
                     id="message"
                     name="message"
-                    rows={4}
+                    rows={5}
                     required
                     value={formData.message}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-brandcentral-200 rounded-md focus:ring-2 focus:ring-brandcentral-accent focus:border-transparent transition resize-none"
+                    className="w-full px-4 py-3 border border-brandcentral-200 rounded-md focus:ring-2 focus:ring-brandcentral-accent focus:border-transparent transition resize-none"
                     placeholder="How can we help you?"
                   />
                 </div>
@@ -144,14 +144,14 @@ const Contact = () => {
             </div>
 
             {/* Contact Info */}
-            <div className="flex flex-col space-y-10">
+            <div className="flex flex-col space-y-12">
               <div>
-                <h2 className="text-2xl font-semibold mb-6">Contact Information</h2>
-                <div className="space-y-6">
+                <h2 className="text-2xl font-semibold mb-8">Contact Information</h2>
+                <div className="space-y-8">
                   <div className="flex items-start">
-                    <Mail className="w-5 h-5 mt-1 text-brandcentral-accent mr-3" />
+                    <Mail className="w-5 h-5 mt-1 text-brandcentral-accent mr-4" />
                     <div>
-                      <p className="font-medium">Email</p>
+                      <p className="font-medium mb-1">Email</p>
                       <a href="mailto:contact@brandcentral.com" className="text-brandcentral-500 hover:text-brandcentral-accent transition-colors">
                         contact@brandcentral.com
                       </a>
@@ -159,9 +159,9 @@ const Contact = () => {
                   </div>
                   
                   <div className="flex items-start">
-                    <Phone className="w-5 h-5 mt-1 text-brandcentral-accent mr-3" />
+                    <Phone className="w-5 h-5 mt-1 text-brandcentral-accent mr-4" />
                     <div>
-                      <p className="font-medium">Phone</p>
+                      <p className="font-medium mb-1">Phone</p>
                       <a href="tel:+18005551234" className="text-brandcentral-500 hover:text-brandcentral-accent transition-colors">
                         +1 (800) 555-1234
                       </a>
@@ -169,9 +169,9 @@ const Contact = () => {
                   </div>
                   
                   <div className="flex items-start">
-                    <MapPin className="w-5 h-5 mt-1 text-brandcentral-accent mr-3" />
+                    <MapPin className="w-5 h-5 mt-1 text-brandcentral-accent mr-4" />
                     <div>
-                      <p className="font-medium">Location</p>
+                      <p className="font-medium mb-1">Location</p>
                       <p className="text-brandcentral-500">
                         123 Quality Avenue<br />
                         New York, NY 10001<br />
@@ -181,9 +181,9 @@ const Contact = () => {
                   </div>
                   
                   <div className="flex items-start">
-                    <Clock className="w-5 h-5 mt-1 text-brandcentral-accent mr-3" />
+                    <Clock className="w-5 h-5 mt-1 text-brandcentral-accent mr-4" />
                     <div>
-                      <p className="font-medium">Business Hours</p>
+                      <p className="font-medium mb-1">Business Hours</p>
                       <p className="text-brandcentral-500">
                         Monday - Friday: 9AM - 6PM EST<br />
                         Saturday - Sunday: Closed
@@ -194,8 +194,8 @@ const Contact = () => {
               </div>
               
               <div>
-                <h3 className="text-lg font-semibold mb-2">Quality Assurance Partners</h3>
-                <p className="text-brandcentral-500 mb-4">
+                <h3 className="text-lg font-semibold mb-4">Quality Assurance Partners</h3>
+                <p className="text-brandcentral-500 mb-6">
                   We work with leading retailers and marketplaces to ensure product quality and brand consistency.
                 </p>
                 <div className="flex flex-wrap gap-4">
