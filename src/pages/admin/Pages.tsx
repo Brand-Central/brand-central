@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,31 +18,75 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Plus, Search, MoreHorizontal, Edit, Eye, Trash, FileText } from 'lucide-react';
-
-// Mock data - would be fetched from Supabase in a real application
-const mockPages = [
-  { id: 1, title: 'Home', slug: '/', status: 'Published', lastUpdated: '2023-06-15' },
-  { id: 2, title: 'About Us', slug: '/about', status: 'Published', lastUpdated: '2023-06-10' },
-  { id: 3, title: 'Services', slug: '/services', status: 'Published', lastUpdated: '2023-06-08' },
-  { id: 4, title: 'Contact', slug: '/contact', status: 'Published', lastUpdated: '2023-06-05' },
-  { id: 5, title: 'Blog Post 1', slug: '/blog/post-1', status: 'Draft', lastUpdated: '2023-06-01' },
-  { id: 6, title: 'Case Studies', slug: '/case-studies', status: 'Published', lastUpdated: '2023-05-28' },
-];
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/lib/supabase';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const Pages = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [pages, setPages] = useState(mockPages);
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
-  const filteredPages = pages.filter(page => 
+  // Fetch pages from Supabase
+  const { data: pages, isLoading, error } = useQuery({
+    queryKey: ['pages'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('pages')
+        .select('*')
+        .order('updated_at', { ascending: false });
+      
+      if (error) {
+        throw new Error(error.message);
+      }
+      
+      return data || [];
+    },
+  });
+
+  // Delete page mutation
+  const deletePageMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from('pages')
+        .delete()
+        .eq('id', id);
+      
+      if (error) {
+        throw new Error(error.message);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['pages'] });
+      toast({
+        title: "Page deleted",
+        description: "The page has been successfully deleted.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: `Failed to delete page: ${error.message}`,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleDelete = (id: string) => {
+    if (window.confirm("Are you sure you want to delete this page? This action cannot be undone.")) {
+      deletePageMutation.mutate(id);
+    }
+  };
+
+  const filteredPages = pages?.filter(page => 
     page.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     page.slug.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    page.status.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+    (page.is_published ? 'published' : 'draft').includes(searchTerm.toLowerCase())
+  ) || [];
 
-  const handleDelete = (id: number) => {
-    // In a real app, this would call Supabase to delete the page
-    setPages(pages.filter(page => page.id !== id));
-  };
+  if (error) {
+    console.error("Error loading pages:", error);
+  }
 
   return (
     <div className="space-y-6">
@@ -67,7 +111,11 @@ const Pages = () => {
         />
       </div>
 
-      {filteredPages.length > 0 ? (
+      {isLoading ? (
+        <div className="flex justify-center py-8">
+          <div className="animate-spin h-8 w-8 border-4 border-brandcentral-accent/20 border-t-brandcentral-accent rounded-full"></div>
+        </div>
+      ) : filteredPages.length > 0 ? (
         <div className="border rounded-md overflow-hidden">
           <Table>
             <TableHeader>
@@ -86,12 +134,14 @@ const Pages = () => {
                   <TableCell className="text-sm text-gray-500">{page.slug}</TableCell>
                   <TableCell>
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      page.status === 'Published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                      page.is_published ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
                     }`}>
-                      {page.status}
+                      {page.is_published ? 'Published' : 'Draft'}
                     </span>
                   </TableCell>
-                  <TableCell className="text-sm text-gray-500">{page.lastUpdated}</TableCell>
+                  <TableCell className="text-sm text-gray-500">
+                    {new Date(page.updated_at).toLocaleDateString()}
+                  </TableCell>
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>

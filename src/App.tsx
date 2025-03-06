@@ -23,6 +23,7 @@ import Login from "./pages/admin/Login";
 import AdminLayout from "./components/admin/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import Pages from "./pages/admin/Pages";
+import PageEditor from "./pages/admin/PageEditor";
 import Subscribers from "./pages/admin/Subscribers";
 import Users from "./pages/admin/Users";
 
@@ -52,6 +53,8 @@ const App = () => (
               <Route index element={<Navigate to="/admin/dashboard" replace />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="pages" element={<Pages />} />
+              <Route path="pages/new" element={<PageEditor />} />
+              <Route path="pages/edit/:id" element={<PageEditor />} />
               <Route path="subscribers" element={<Subscribers />} />
               <Route path="users" element={<Users />} />
             </Route>

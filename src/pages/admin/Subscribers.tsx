@@ -21,37 +21,101 @@ import {
 } from '@/components/ui/dialog';
 import { Search, Trash, Mail, Download, Plus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-
-// Mock data - would be fetched from Supabase in a real application
-const mockSubscribers = [
-  { id: 1, email: 'john.doe@example.com', dateSubscribed: '2023-06-15', status: 'Active' },
-  { id: 2, email: 'jane.smith@example.com', dateSubscribed: '2023-06-10', status: 'Active' },
-  { id: 3, email: 'robert.johnson@example.com', dateSubscribed: '2023-06-08', status: 'Active' },
-  { id: 4, email: 'susan.williams@example.com', dateSubscribed: '2023-06-05', status: 'Unsubscribed' },
-  { id: 5, email: 'michael.brown@example.com', dateSubscribed: '2023-06-01', status: 'Active' },
-  { id: 6, email: 'emily.davis@example.com', dateSubscribed: '2023-05-28', status: 'Active' },
-];
+import { supabase } from '@/lib/supabase';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const Subscribers = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [subscribers, setSubscribers] = useState(mockSubscribers);
   const [webhookUrl, setWebhookUrl] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newEmail, setNewEmail] = useState('');
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
-  const filteredSubscribers = subscribers.filter(subscriber => 
-    subscriber.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    subscriber.status.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Fetch subscribers from Supabase
+  const { data: subscribers, isLoading, error } = useQuery({
+    queryKey: ['subscribers'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('subscribers')
+        .select('*')
+        .order('subscribed_at', { ascending: false });
+      
+      if (error) {
+        throw new Error(error.message);
+      }
+      
+      return data || [];
+    },
+  });
 
-  const handleDeleteSubscriber = (id: number) => {
-    // In a real app, this would call Supabase to delete the subscriber
-    setSubscribers(subscribers.filter(subscriber => subscriber.id !== id));
-    toast({
-      title: "Subscriber deleted",
-      description: "The subscriber has been removed from your list.",
-    });
+  // Add subscriber mutation
+  const addSubscriberMutation = useMutation({
+    mutationFn: async (email: string) => {
+      const { data, error } = await supabase
+        .from('subscribers')
+        .insert([{ email }])
+        .select()
+        .single();
+      
+      if (error) {
+        if (error.code === '23505') {
+          throw new Error('This email is already subscribed.');
+        }
+        throw new Error(error.message);
+      }
+      
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['subscribers'] });
+      setNewEmail('');
+      setIsDialogOpen(false);
+      
+      toast({
+        title: "Subscriber added",
+        description: "The new subscriber has been added to your list.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Delete subscriber mutation
+  const deleteSubscriberMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from('subscribers')
+        .delete()
+        .eq('id', id);
+      
+      if (error) {
+        throw new Error(error.message);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['subscribers'] });
+      toast({
+        title: "Subscriber deleted",
+        description: "The subscriber has been removed from your list.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: `Failed to delete subscriber: ${error.message}`,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleDeleteSubscriber = (id: string) => {
+    deleteSubscriberMutation.mutate(id);
   };
 
   const handleAddSubscriber = () => {
@@ -64,31 +128,32 @@ const Subscribers = () => {
       return;
     }
 
-    // In a real app, this would call Supabase to add the subscriber
-    const newId = Math.max(...subscribers.map(s => s.id)) + 1;
-    const today = new Date().toISOString().split('T')[0];
-    
-    setSubscribers([
-      ...subscribers,
-      { id: newId, email: newEmail, dateSubscribed: today, status: 'Active' }
-    ]);
-    
-    setNewEmail('');
-    setIsDialogOpen(false);
-    
-    toast({
-      title: "Subscriber added",
-      description: "The new subscriber has been added to your list.",
-    });
+    addSubscriberMutation.mutate(newEmail);
   };
 
   const handleExportCSV = () => {
+    if (!subscribers || subscribers.length === 0) {
+      toast({
+        title: "No subscribers",
+        description: "There are no subscribers to export.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     // Create CSV content
-    const headers = ["ID", "Email", "Date Subscribed", "Status"];
+    const headers = ["ID", "Email", "First Name", "Last Name", "Date Subscribed", "Status"];
     const csvContent = [
       headers.join(","),
       ...subscribers.map(subscriber => 
-        [subscriber.id, subscriber.email, subscriber.dateSubscribed, subscriber.status].join(",")
+        [
+          subscriber.id, 
+          subscriber.email, 
+          subscriber.first_name || '', 
+          subscriber.last_name || '', 
+          new Date(subscriber.subscribed_at).toLocaleDateString(),
+          subscriber.is_active ? 'Active' : 'Unsubscribed'
+        ].join(",")
       )
     ].join("\n");
     
@@ -119,19 +184,37 @@ const Subscribers = () => {
     }
 
     try {
-      // In a real implementation, we would include more data
-      await fetch(webhookUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      // Save the webhook configuration to Supabase
+      const { data: webhookConfig, error } = await supabase
+        .from('webhook_configs')
+        .insert([
+          { 
+            name: 'Subscriber Webhook', 
+            url: webhookUrl, 
+            event_type: 'subscribers_export' 
+          }
+        ])
+        .select()
+        .single();
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      // Trigger the webhook using our Edge Function
+      const response = await supabase.functions.invoke('trigger-webhook', {
+        body: { 
+          webhookId: webhookConfig.id, 
+          payload: {
+            count: subscribers?.length || 0,
+            timestamp: new Date().toISOString(),
+          }
         },
-        mode: "no-cors", // Add this to handle CORS
-        body: JSON.stringify({
-          event: "subscribers_export",
-          count: subscribers.length,
-          timestamp: new Date().toISOString(),
-        }),
       });
+
+      if (response.error) {
+        throw new Error(response.error.message);
+      }
 
       toast({
         title: "Webhook triggered",
@@ -141,11 +224,22 @@ const Subscribers = () => {
       console.error("Error triggering webhook:", error);
       toast({
         title: "Error",
-        description: "Failed to trigger the webhook. Please check the URL and try again.",
+        description: `Failed to trigger the webhook: ${error.message}`,
         variant: "destructive",
       });
     }
   };
+
+  const filteredSubscribers = subscribers?.filter(subscriber => 
+    subscriber.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (subscriber.first_name && subscriber.first_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (subscriber.last_name && subscriber.last_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (subscriber.is_active ? 'active' : 'unsubscribed').includes(searchTerm.toLowerCase())
+  ) || [];
+
+  if (error) {
+    console.error("Error loading subscribers:", error);
+  }
 
   return (
     <div className="space-y-6">
@@ -220,7 +314,11 @@ const Subscribers = () => {
         </div>
       </div>
 
-      {filteredSubscribers.length > 0 ? (
+      {isLoading ? (
+        <div className="flex justify-center py-8">
+          <div className="animate-spin h-8 w-8 border-4 border-brandcentral-accent/20 border-t-brandcentral-accent rounded-full"></div>
+        </div>
+      ) : filteredSubscribers.length > 0 ? (
         <div className="border rounded-md overflow-hidden">
           <Table>
             <TableHeader>
@@ -235,12 +333,14 @@ const Subscribers = () => {
               {filteredSubscribers.map(subscriber => (
                 <TableRow key={subscriber.id}>
                   <TableCell className="font-medium">{subscriber.email}</TableCell>
-                  <TableCell className="text-sm text-gray-500">{subscriber.dateSubscribed}</TableCell>
+                  <TableCell className="text-sm text-gray-500">
+                    {new Date(subscriber.subscribed_at).toLocaleDateString()}
+                  </TableCell>
                   <TableCell>
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      subscriber.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                      subscriber.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
                     }`}>
-                      {subscriber.status}
+                      {subscriber.is_active ? 'Active' : 'Unsubscribed'}
                     </span>
                   </TableCell>
                   <TableCell>
