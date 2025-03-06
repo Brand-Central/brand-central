@@ -5,6 +5,18 @@ import { Mail, Phone } from 'lucide-react';
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
+  // Function to handle smooth scrolling when on services page
+  const handleServiceLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    // Check if we're already on the services page
+    if (window.location.pathname === '/services') {
+      e.preventDefault();
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <footer className="bg-brandcentral-950 text-white pt-16 pb-8">
       <div className="container">
@@ -57,19 +69,49 @@ const Footer = () => {
             <h3 className="text-white font-medium text-lg mb-4">Services</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/services#test-buying" className="text-brandcentral-300 hover:text-brandcentral-accent transition-custom">Test Buying</Link>
+                <Link 
+                  to="/services#test-buying" 
+                  className="text-brandcentral-300 hover:text-brandcentral-accent transition-custom"
+                  onClick={(e) => handleServiceLinkClick(e, 'test-buying')}
+                >
+                  Test Buying
+                </Link>
               </li>
               <li>
-                <Link to="/services#quality-control" className="text-brandcentral-300 hover:text-brandcentral-accent transition-custom">Quality Control</Link>
+                <Link 
+                  to="/services#quality-control" 
+                  className="text-brandcentral-300 hover:text-brandcentral-accent transition-custom"
+                  onClick={(e) => handleServiceLinkClick(e, 'quality-control')}
+                >
+                  Quality Control
+                </Link>
               </li>
               <li>
-                <Link to="/services#compliance" className="text-brandcentral-300 hover:text-brandcentral-accent transition-custom">Compliance Assessment</Link>
+                <Link 
+                  to="/services#compliance" 
+                  className="text-brandcentral-300 hover:text-brandcentral-accent transition-custom"
+                  onClick={(e) => handleServiceLinkClick(e, 'compliance')}
+                >
+                  Compliance Assessment
+                </Link>
               </li>
               <li>
-                <Link to="/services#consulting" className="text-brandcentral-300 hover:text-brandcentral-accent transition-custom">Consulting Services</Link>
+                <Link 
+                  to="/services#consulting" 
+                  className="text-brandcentral-300 hover:text-brandcentral-accent transition-custom"
+                  onClick={(e) => handleServiceLinkClick(e, 'consulting')}
+                >
+                  Consulting Services
+                </Link>
               </li>
               <li>
-                <Link to="/services#reporting" className="text-brandcentral-300 hover:text-brandcentral-accent transition-custom">Reporting & Analytics</Link>
+                <Link 
+                  to="/services#reporting" 
+                  className="text-brandcentral-300 hover:text-brandcentral-accent transition-custom"
+                  onClick={(e) => handleServiceLinkClick(e, 'reporting')}
+                >
+                  Reporting & Analytics
+                </Link>
               </li>
             </ul>
           </div>

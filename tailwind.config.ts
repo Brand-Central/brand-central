@@ -175,5 +175,17 @@ export default {
             },
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		function({ addBase }: { addBase: Function }) {
+			addBase({
+				'html': {
+					scrollBehavior: 'smooth',
+					'@media (prefers-reduced-motion: reduce)': {
+						scrollBehavior: 'auto',
+					},
+				},
+			});
+		},
+	],
 } satisfies Config;
