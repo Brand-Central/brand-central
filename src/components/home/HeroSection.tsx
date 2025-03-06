@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 
 const HeroSection = () => {
   return (
-    <section className="py-24 md:py-32 pb-48 md:pb-56 relative overflow-hidden">
+    <section className="py-20 md:py-24 pb-20 md:pb-28 relative overflow-hidden">
       {/* Background elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-brandcentral-50/80 via-white/20 to-brandcentral-100/50 opacity-70 pointer-events-none"></div>
       <div className="absolute -top-24 -right-24 w-64 h-64 bg-blue-100 rounded-full blur-3xl opacity-20"></div>
@@ -19,7 +19,7 @@ const HeroSection = () => {
             Trusted by leading retailers
           </div>
           
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold mb-10 tracking-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold mb-8 tracking-tight">
             <AnimatedText
               text="Quality control solutions for global brands"
               tag="h1"
@@ -28,7 +28,7 @@ const HeroSection = () => {
             />
           </h1>
           
-          <p className="text-lg md:text-xl text-brandcentral-600 mb-10 max-w-2xl mx-auto animate-fade-in opacity-0" style={{ animationDelay: '400ms' }}>
+          <p className="text-lg md:text-xl text-brandcentral-600 mb-8 max-w-2xl mx-auto animate-fade-in opacity-0" style={{ animationDelay: '400ms' }}>
             We help businesses ensure their products meet the highest quality standards through comprehensive test-buying and quality control services.
           </p>
           
