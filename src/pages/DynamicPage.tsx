@@ -12,6 +12,10 @@ const DynamicPage = () => {
   const { data: page, isLoading, error } = useQuery({
     queryKey: ['page-content', slug],
     queryFn: async () => {
+      if (!slug) {
+        throw new Error('No slug provided');
+      }
+      
       const { data, error } = await supabase
         .from('pages')
         .select('*')
@@ -25,7 +29,8 @@ const DynamicPage = () => {
       
       return data;
     },
-    retry: false
+    retry: false,
+    enabled: Boolean(slug),
   });
 
   useEffect(() => {
