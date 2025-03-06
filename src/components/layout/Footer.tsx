@@ -19,13 +19,13 @@ const Footer = () => {
               Brandcentral provides comprehensive test-buying and product quality control services to help businesses ensure their products meet rigorous standards and exceed customer expectations.
             </p>
             <div className="flex flex-col space-y-2">
-              <a href="tel:+1234567890" className="inline-flex items-center text-brandcentral-300 hover:text-brandcentral-accent transition-custom">
+              <a href="tel:+12536668753" className="inline-flex items-center text-brandcentral-300 hover:text-brandcentral-accent transition-custom">
                 <Phone className="w-4 h-4 mr-2" />
-                <span>(123) 456-7890</span>
+                <span>(253) 666-8753</span>
               </a>
-              <a href="mailto:info@brandcentral.com" className="inline-flex items-center text-brandcentral-300 hover:text-brandcentral-accent transition-custom">
+              <a href="mailto:hello@brandcentral.com" className="inline-flex items-center text-brandcentral-300 hover:text-brandcentral-accent transition-custom">
                 <Mail className="w-4 h-4 mr-2" />
-                <span>info@brandcentral.com</span>
+                <span>hello@brandcentral.com</span>
               </a>
               <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-brandcentral-300 hover:text-brandcentral-accent transition-custom">
                 <MapPin className="w-4 h-4 mr-2" />

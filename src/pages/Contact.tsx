@@ -152,8 +152,8 @@ const Contact = () => {
                     <Mail className="w-5 h-5 mt-1 text-brandcentral-accent mr-4" />
                     <div>
                       <p className="font-medium mb-1">Email</p>
-                      <a href="mailto:contact@brandcentral.com" className="text-brandcentral-500 hover:text-brandcentral-accent transition-colors">
-                        contact@brandcentral.com
+                      <a href="mailto:hello@brandcentral.com" className="text-brandcentral-500 hover:text-brandcentral-accent transition-colors">
+                        hello@brandcentral.com
                       </a>
                     </div>
                   </div>
@@ -162,8 +162,8 @@ const Contact = () => {
                     <Phone className="w-5 h-5 mt-1 text-brandcentral-accent mr-4" />
                     <div>
                       <p className="font-medium mb-1">Phone</p>
-                      <a href="tel:+18005551234" className="text-brandcentral-500 hover:text-brandcentral-accent transition-colors">
-                        +1 (800) 555-1234
+                      <a href="tel:+12536668753" className="text-brandcentral-500 hover:text-brandcentral-accent transition-colors">
+                        +1 (253) 666-8753
                       </a>
                     </div>
                   </div>
