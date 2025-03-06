@@ -34,7 +34,6 @@ import CreateFirstPage from "./pages/admin/CreateFirstPage";
 // Add NProgress for page transitions
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
-import { supabase } from "@/lib/supabase";
 
 // Configure NProgress
 NProgress.configure({ 
@@ -92,18 +91,88 @@ const App = () => (
               <>
                 <Header />
                 <PageTransition>
-                  <Routes>
-                    <Route index element={<Index />} />
-                    <Route path="/services" element={<Services />} />
-                    <Route path="/case-studies" element={<CaseStudies />} />
-                    <Route path="/case-study-1" element={<CaseStudy1 />} />
-                    <Route path="/case-study-2" element={<CaseStudy2 />} />
-                    <Route path="/case-study-3" element={<CaseStudy3 />} />
-                    <Route path="/how-it-works" element={<HowItWorks />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/:slug" element={<DynamicPage />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
+                  <Index />
+                </PageTransition>
+                <Footer />
+              </>
+            } />
+            <Route path="/services" element={
+              <>
+                <Header />
+                <PageTransition>
+                  <Services />
+                </PageTransition>
+                <Footer />
+              </>
+            } />
+            <Route path="/case-studies" element={
+              <>
+                <Header />
+                <PageTransition>
+                  <CaseStudies />
+                </PageTransition>
+                <Footer />
+              </>
+            } />
+            <Route path="/case-study-1" element={
+              <>
+                <Header />
+                <PageTransition>
+                  <CaseStudy1 />
+                </PageTransition>
+                <Footer />
+              </>
+            } />
+            <Route path="/case-study-2" element={
+              <>
+                <Header />
+                <PageTransition>
+                  <CaseStudy2 />
+                </PageTransition>
+                <Footer />
+              </>
+            } />
+            <Route path="/case-study-3" element={
+              <>
+                <Header />
+                <PageTransition>
+                  <CaseStudy3 />
+                </PageTransition>
+                <Footer />
+              </>
+            } />
+            <Route path="/how-it-works" element={
+              <>
+                <Header />
+                <PageTransition>
+                  <HowItWorks />
+                </PageTransition>
+                <Footer />
+              </>
+            } />
+            <Route path="/contact" element={
+              <>
+                <Header />
+                <PageTransition>
+                  <Contact />
+                </PageTransition>
+                <Footer />
+              </>
+            } />
+            <Route path="/:slug" element={
+              <>
+                <Header />
+                <PageTransition>
+                  <DynamicPage />
+                </PageTransition>
+                <Footer />
+              </>
+            } />
+            <Route path="*" element={
+              <>
+                <Header />
+                <PageTransition>
+                  <NotFound />
                 </PageTransition>
                 <Footer />
               </>
