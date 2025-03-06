@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { PlusCircle, Type, Image, Layout, MessageSquare, Gallery, Phone } from 'lucide-react';
+import { PlusCircle, Type, Image, Layout, MessageSquare, Images, Phone } from 'lucide-react';
 import { SectionType } from '@/types/sections';
 
 const sectionTypes: { type: SectionType; icon: React.ReactNode; label: string; description: string }[] = [
@@ -44,7 +44,7 @@ const sectionTypes: { type: SectionType; icon: React.ReactNode; label: string; d
   },
   { 
     type: 'gallery', 
-    icon: <Gallery className="h-5 w-5" />, 
+    icon: <Images className="h-5 w-5" />, 
     label: 'Image Gallery', 
     description: 'Showcase multiple images in a gallery format' 
   },
