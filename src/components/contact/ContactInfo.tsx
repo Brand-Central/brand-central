@@ -1,5 +1,5 @@
 
-import { Mail, Phone, MapPin, Clock } from 'lucide-react';
+import { Mail, Phone, Clock } from 'lucide-react';
 
 const ContactInfo = () => {
   return (
@@ -24,18 +24,6 @@ const ContactInfo = () => {
               <a href="tel:+12536668753" className="text-brandcentral-500 hover:text-brandcentral-accent transition-colors">
                 +1 (253) 666-8753
               </a>
-            </div>
-          </div>
-          
-          <div className="flex items-start">
-            <MapPin className="w-5 h-5 mt-1 text-brandcentral-accent mr-4" />
-            <div>
-              <p className="font-medium mb-1">Location</p>
-              <p className="text-brandcentral-500">
-                123 Quality Avenue<br />
-                New York, NY 10001<br />
-                United States
-              </p>
             </div>
           </div>
           

@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { Mail, MapPin, Phone } from 'lucide-react';
+import { Mail, Phone } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -26,10 +26,6 @@ const Footer = () => {
               <a href="mailto:hello@brandcentral.com" className="inline-flex items-center text-brandcentral-300 hover:text-brandcentral-accent transition-custom">
                 <Mail className="w-4 h-4 mr-2" />
                 <span>hello@brandcentral.com</span>
-              </a>
-              <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-brandcentral-300 hover:text-brandcentral-accent transition-custom">
-                <MapPin className="w-4 h-4 mr-2" />
-                <span>123 Business Ave, Anytown, USA</span>
               </a>
             </div>
           </div>

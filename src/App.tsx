@@ -1,10 +1,10 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import PageTransition from "./components/ui/PageTransition";
@@ -17,6 +17,7 @@ import CaseStudy3 from "./pages/CaseStudy3";
 import HowItWorks from "./pages/HowItWorks";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import DynamicPage from "./pages/DynamicPage";
 
 // Admin Pages
 import { AuthProvider } from "./contexts/AuthContext";
@@ -31,6 +32,7 @@ import Users from "./pages/admin/Users";
 // Add NProgress for page transitions
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
+import { supabase } from "@/lib/supabase";
 
 // Configure NProgress
 NProgress.configure({ 
@@ -39,6 +41,26 @@ NProgress.configure({
   speed: 300
 });
 
+// Progress bar component
+const ProgressBar = () => {
+  const location = useLocation();
+  
+  useEffect(() => {
+    NProgress.start();
+    
+    const timeout = setTimeout(() => {
+      NProgress.done();
+    }, 500);
+    
+    return () => {
+      clearTimeout(timeout);
+      NProgress.done();
+    };
+  }, [location]);
+  
+  return null;
+};
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -46,6 +68,7 @@ const App = () => (
     <AuthProvider>
       <TooltipProvider>
         <BrowserRouter>
+          <ProgressBar />
           <Routes>
             {/* Admin Routes */}
             <Route path="/admin/login" element={<Login />} />
@@ -74,6 +97,7 @@ const App = () => (
                     <Route path="/case-study-3" element={<CaseStudy3 />} />
                     <Route path="/how-it-works" element={<HowItWorks />} />
                     <Route path="/contact" element={<Contact />} />
+                    <Route path="/:slug" element={<DynamicPage />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </PageTransition>
