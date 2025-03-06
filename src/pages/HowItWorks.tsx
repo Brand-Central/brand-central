@@ -105,6 +105,13 @@ const HowItWorks = () => {
             </p>
           </div>
         </div>
+        <div className="absolute bottom-0 left-0 right-0 h-48 overflow-hidden">
+          <img 
+            src="https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop" 
+            alt="Team collaboration" 
+            className="w-full h-full object-cover object-top opacity-10"
+          />
+        </div>
       </section>
 
       {/* Process Steps */}
@@ -192,9 +199,16 @@ const HowItWorks = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-brandcentral-900 text-white">
-        <div className="container">
+      {/* CTA Section with background image */}
+      <section className="py-20 bg-brandcentral-900 text-white relative">
+        <div className="absolute inset-0 opacity-10">
+          <img 
+            src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2070&auto=format&fit=crop" 
+            alt="Background" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="container relative z-10">
           <div className="text-center max-w-3xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-semibold mb-6">
               <AnimatedText

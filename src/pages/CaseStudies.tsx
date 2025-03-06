@@ -55,21 +55,21 @@ const caseStudies = [
     title: "Reducing Product Returns for a Major Electronics Retailer",
     description: "Through our comprehensive quality control program, we helped a major electronics retailer reduce product returns by 35% within six months, resulting in significant cost savings and improved customer satisfaction.",
     tags: ["Electronics", "Quality Control", "Return Reduction"],
-    image: "cs-1"
+    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop"
   },
   {
     id: 2,
     title: "Ensuring Compliance for a Global Beauty Brand",
     description: "Our compliance assessment services helped a global beauty brand identify and address potential regulatory issues before launching in new markets, ensuring smooth market entry and avoiding costly delays.",
     tags: ["Beauty", "Compliance", "Global Markets"],
-    image: "cs-2"
+    image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?q=80&w=2070&auto=format&fit=crop"
   },
   {
     id: 3,
     title: "Improving Product Quality for a Home Goods Manufacturer",
     description: "By implementing our test-buying program, a home goods manufacturer was able to identify and resolve several quality issues, resulting in a 40% decrease in negative reviews and a 25% increase in customer satisfaction scores.",
     tags: ["Home Goods", "Quality Improvement", "Customer Satisfaction"],
-    image: "cs-3"
+    image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=1994&auto=format&fit=crop"
   }
 ];
 
@@ -139,11 +139,12 @@ const CaseStudies = () => {
             {caseStudies.map((study) => (
               <div key={study.id} className="bg-white border border-brandcentral-100 rounded-lg overflow-hidden shadow-subtle transition-custom hover:shadow-elevated">
                 <div className="h-48 bg-brandcentral-100 relative">
-                  {/* Replace with actual image */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-brandcentral-800/20 to-transparent"></div>
-                  <div className="absolute inset-0 flex items-center justify-center text-brandcentral-400">
-                    <p>Case Study Image</p>
-                  </div>
+                  <img 
+                    src={study.image}
+                    alt={study.title} 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-brandcentral-800/30 to-transparent"></div>
                 </div>
                 <div className="p-6">
                   <div className="flex flex-wrap gap-2 mb-4">

@@ -41,9 +41,9 @@ const Contact = () => {
         <meta name="description" content="Get in touch with Brandcentral for test-buying and product quality control services." />
       </Helmet>
 
-      <main className="pt-24 pb-16">
+      <main className="pt-24 pb-16 relative">
         {/* Page Header */}
-        <section className="container mb-12">
+        <section className="container mb-12 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
               Get in Touch
@@ -55,7 +55,16 @@ const Contact = () => {
           </div>
         </section>
 
-        <div className="container">
+        {/* Background image (fixed position) */}
+        <div className="fixed inset-0 -z-10">
+          <img 
+            src="https://images.unsplash.com/photo-1568992687947-868a62a9f521?q=80&w=2832&auto=format&fit=crop" 
+            alt="Office background" 
+            className="w-full h-full object-cover opacity-5"
+          />
+        </div>
+
+        <div className="container relative z-10">
           <div className="grid md:grid-cols-2 gap-12 items-start max-w-5xl mx-auto">
             {/* Contact Form */}
             <div className="bg-white p-8 rounded-lg shadow-subtle">
@@ -195,6 +204,14 @@ const Contact = () => {
                   <div className="bg-gray-100 py-2 px-4 rounded text-sm text-brandcentral-500">Target</div>
                   <div className="bg-gray-100 py-2 px-4 rounded text-sm text-brandcentral-500">Best Buy</div>
                 </div>
+              </div>
+              
+              <div className="mt-8 rounded-lg overflow-hidden shadow-subtle">
+                <img 
+                  src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=2069&auto=format&fit=crop" 
+                  alt="Our office" 
+                  className="w-full h-48 object-cover"
+                />
               </div>
             </div>
           </div>

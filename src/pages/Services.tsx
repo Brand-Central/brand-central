@@ -77,12 +77,13 @@ const Services = () => {
                 </div>
               </div>
             </div>
-            <div className="h-[400px] bg-brandcentral-100 rounded-lg overflow-hidden relative">
-              {/* Replace with actual image */}
+            <div className="h-[400px] rounded-lg overflow-hidden relative">
+              <img 
+                src="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=1974&auto=format&fit=crop"
+                alt="Person shopping online for test-buying services" 
+                className="w-full h-full object-cover"
+              />
               <div className="absolute inset-0 bg-gradient-to-tr from-brandcentral-800/20 to-transparent"></div>
-              <div className="absolute inset-0 flex items-center justify-center text-brandcentral-400">
-                <p>Test Buying Image</p>
-              </div>
             </div>
           </div>
 
@@ -131,12 +132,13 @@ const Services = () => {
                 </div>
               </div>
             </div>
-            <div className="order-1 md:order-2 h-[400px] bg-brandcentral-100 rounded-lg overflow-hidden relative">
-              {/* Replace with actual image */}
+            <div className="order-1 md:order-2 h-[400px] rounded-lg overflow-hidden relative">
+              <img 
+                src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?q=80&w=2070&auto=format&fit=crop"
+                alt="Quality control specialist inspecting a product" 
+                className="w-full h-full object-cover"
+              />
               <div className="absolute inset-0 bg-gradient-to-tr from-brandcentral-800/20 to-transparent"></div>
-              <div className="absolute inset-0 flex items-center justify-center text-brandcentral-400">
-                <p>Quality Control Image</p>
-              </div>
             </div>
           </div>
 
@@ -185,12 +187,13 @@ const Services = () => {
                 </div>
               </div>
             </div>
-            <div className="h-[400px] bg-brandcentral-100 rounded-lg overflow-hidden relative">
-              {/* Replace with actual image */}
+            <div className="h-[400px] rounded-lg overflow-hidden relative">
+              <img 
+                src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=2070&auto=format&fit=crop"
+                alt="Person checking regulatory compliance documents" 
+                className="w-full h-full object-cover"
+              />
               <div className="absolute inset-0 bg-gradient-to-tr from-brandcentral-800/20 to-transparent"></div>
-              <div className="absolute inset-0 flex items-center justify-center text-brandcentral-400">
-                <p>Compliance Image</p>
-              </div>
             </div>
           </div>
 
@@ -239,12 +242,13 @@ const Services = () => {
                 </div>
               </div>
             </div>
-            <div className="order-1 md:order-2 h-[400px] bg-brandcentral-100 rounded-lg overflow-hidden relative">
-              {/* Replace with actual image */}
+            <div className="order-1 md:order-2 h-[400px] rounded-lg overflow-hidden relative">
+              <img 
+                src="https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop"
+                alt="Business consultants in a meeting" 
+                className="w-full h-full object-cover"
+              />
               <div className="absolute inset-0 bg-gradient-to-tr from-brandcentral-800/20 to-transparent"></div>
-              <div className="absolute inset-0 flex items-center justify-center text-brandcentral-400">
-                <p>Consulting Image</p>
-              </div>
             </div>
           </div>
 
@@ -293,12 +297,13 @@ const Services = () => {
                 </div>
               </div>
             </div>
-            <div className="h-[400px] bg-brandcentral-100 rounded-lg overflow-hidden relative">
-              {/* Replace with actual image */}
+            <div className="h-[400px] rounded-lg overflow-hidden relative">
+              <img 
+                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop"
+                alt="Data analytics dashboard for quality reports" 
+                className="w-full h-full object-cover"
+              />
               <div className="absolute inset-0 bg-gradient-to-tr from-brandcentral-800/20 to-transparent"></div>
-              <div className="absolute inset-0 flex items-center justify-center text-brandcentral-400">
-                <p>Reporting Image</p>
-              </div>
             </div>
           </div>
         </div>

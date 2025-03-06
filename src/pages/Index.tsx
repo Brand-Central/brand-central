@@ -104,12 +104,13 @@ const Index = () => {
                 </Button>
               </Link>
             </div>
-            <div className="order-1 md:order-2 h-[400px] md:h-[500px] bg-brandcentral-100 rounded-lg overflow-hidden relative">
-              {/* Replace with actual image */}
+            <div className="order-1 md:order-2 h-[400px] md:h-[500px] rounded-lg overflow-hidden relative">
+              <img 
+                src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3"
+                alt="Quality control specialists inspecting products" 
+                className="w-full h-full object-cover"
+              />
               <div className="absolute inset-0 bg-gradient-to-tr from-brandcentral-800/20 to-transparent"></div>
-              <div className="absolute inset-0 flex items-center justify-center text-brandcentral-400">
-                <p>Product Quality Image</p>
-              </div>
             </div>
           </div>
         </div>
