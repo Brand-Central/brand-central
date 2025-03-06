@@ -14,9 +14,12 @@ import {
   Clock, 
   AlertTriangle,
   Trash,
-  Copy
+  Copy,
+  LayoutTemplate,
+  Code
 } from 'lucide-react';
 import Editor from '@/components/admin/Editor';
+import PageSectionEditor from '@/components/admin/PageSectionEditor';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
@@ -33,6 +36,7 @@ import {
   DialogClose,
 } from '@/components/ui/dialog';
 import { format } from 'date-fns';
+import { PageContent } from '@/types/sections';
 
 const PageEditor = () => {
   const { id } = useParams();
@@ -45,10 +49,11 @@ const PageEditor = () => {
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
   const [metaDescription, setMetaDescription] = useState('');
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState<PageContent>({ html: '' });
   const [isPublished, setIsPublished] = useState(false);
   const [initialSlug, setInitialSlug] = useState('');
   const [currentTab, setCurrentTab] = useState('edit');
+  const [editorMode, setEditorMode] = useState<'visual' | 'code'>('visual');
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   // Fetch page data if in edit mode
@@ -85,7 +90,11 @@ const PageEditor = () => {
       setSlug(pageData.slug || '');
       setInitialSlug(pageData.slug || '');
       setMetaDescription(pageData.meta_description || '');
-      setContent(pageData.content?.html || '');
+      
+      // Handle content based on the format in the database
+      const pageContent: PageContent = pageData.content || { html: '' };
+      setContent(pageContent);
+      
       setIsPublished(pageData.is_published || false);
     }
   }, [pageData]);
@@ -108,7 +117,7 @@ const PageEditor = () => {
         title,
         slug,
         meta_description: metaDescription,
-        content: { html: content },
+        content: content,
         is_published: isPublished,
         author_id: user?.id,
         updated_at: new Date().toISOString()
@@ -234,6 +243,16 @@ const PageEditor = () => {
     });
   };
 
+  const handleContentChange = (newContent: string | PageContent) => {
+    if (typeof newContent === 'string') {
+      // If it's from the code editor, just update the HTML content
+      setContent({ ...content, html: newContent });
+    } else {
+      // If it's from the section editor, update the entire content object
+      setContent(newContent);
+    }
+  };
+
   if (isLoading && isEditMode) {
     return (
       <div className="flex justify-center py-8">
@@ -331,11 +350,41 @@ const PageEditor = () => {
               
               <Card>
                 <CardContent className="p-6">
-                  <Label className="mb-2 block">Page Content</Label>
-                  <Editor
-                    initialValue={content}
-                    onChange={(newContent) => setContent(newContent)}
-                  />
+                  <div className="flex justify-between items-center mb-4">
+                    <Label className="text-base">Page Content</Label>
+                    <div className="flex gap-2">
+                      <Button 
+                        size="sm" 
+                        variant={editorMode === 'visual' ? 'secondary' : 'outline'} 
+                        onClick={() => setEditorMode('visual')}
+                        className="flex items-center gap-1.5"
+                      >
+                        <LayoutTemplate className="h-4 w-4" />
+                        Visual
+                      </Button>
+                      <Button 
+                        size="sm" 
+                        variant={editorMode === 'code' ? 'secondary' : 'outline'} 
+                        onClick={() => setEditorMode('code')}
+                        className="flex items-center gap-1.5"
+                      >
+                        <Code className="h-4 w-4" />
+                        HTML
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  {editorMode === 'visual' ? (
+                    <PageSectionEditor 
+                      initialContent={content}
+                      onChange={handleContentChange}
+                    />
+                  ) : (
+                    <Editor
+                      initialValue={content.html || ''}
+                      onChange={(html) => handleContentChange(html)}
+                    />
+                  )}
                 </CardContent>
               </Card>
             </div>
@@ -417,11 +466,17 @@ const PageEditor = () => {
               <div className="max-w-4xl mx-auto">
                 <h1 className="text-3xl font-bold mb-4">{title || 'Untitled Page'}</h1>
                 
-                {content ? (
+                {content.html ? (
                   <div 
                     className="prose max-w-none border-t pt-4"
-                    dangerouslySetInnerHTML={{ __html: content }}
+                    dangerouslySetInnerHTML={{ __html: content.html }}
                   />
+                ) : content.sections && content.sections.length > 0 ? (
+                  <div className="border-t pt-4">
+                    <div className="text-gray-500 mb-4">
+                      Page has {content.sections.length} section(s). Preview will render in live mode.
+                    </div>
+                  </div>
                 ) : (
                   <div className="text-gray-500 italic border-t pt-4">
                     No content yet. Start editing to see a preview.

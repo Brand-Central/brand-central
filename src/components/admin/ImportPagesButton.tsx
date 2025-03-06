@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { ImportIcon, CheckCircle, AlertCircle } from 'lucide-react';
+import { ImportIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { importPagesToCMS } from '@/utils/importPagesToCms';
 import { useAuth } from '@/contexts/AuthContext';
