@@ -1,10 +1,14 @@
 
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Section, SectionType, PageContent, TextSection, HeroSection } from '@/types/sections';
+import { Section, SectionType, PageContent, TextSection, HeroSection, FeatureSection, CTASection, GallerySection, TestimonialSection, ContactSection } from '@/types/sections';
 import SectionSelector from '@/components/admin/SectionSelector';
 import TextSectionEditor from '@/components/admin/sections/TextSectionEditor';
 import HeroSectionEditor from '@/components/admin/sections/HeroSectionEditor';
+import CTASectionEditor from '@/components/admin/sections/CTASectionEditor';
+import GallerySectionEditor from '@/components/admin/sections/GallerySectionEditor';
+import TestimonialSectionEditor from '@/components/admin/sections/TestimonialSectionEditor';
+import ContactSectionEditor from '@/components/admin/sections/ContactSectionEditor';
 import { Card, CardContent } from '@/components/ui/card';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { GripVertical } from 'lucide-react';
@@ -41,7 +45,53 @@ const PageSectionEditor: React.FC<PageSectionEditorProps> = ({ initialContent, o
           buttonText: 'Learn More',
           buttonLink: '/',
         } as HeroSection;
-      // Additional cases for other section types would go here
+      case 'feature':
+        return {
+          ...baseSection,
+          type: 'feature',
+          heading: 'Features & Benefits',
+          items: [
+            { id: uuidv4(), title: 'Feature 1', description: 'Description of feature 1' },
+            { id: uuidv4(), title: 'Feature 2', description: 'Description of feature 2' },
+          ],
+        } as FeatureSection;
+      case 'cta':
+        return {
+          ...baseSection,
+          type: 'cta',
+          heading: 'Ready to Get Started?',
+          subheading: 'Join thousands of satisfied customers today.',
+          buttonText: 'Get Started',
+          buttonLink: '/contact',
+        } as CTASection;
+      case 'gallery':
+        return {
+          ...baseSection,
+          type: 'gallery',
+          images: [
+            { id: uuidv4(), url: '', alt: 'Gallery image 1' },
+          ],
+        } as GallerySection;
+      case 'testimonial':
+        return {
+          ...baseSection,
+          type: 'testimonial',
+          items: [
+            { id: uuidv4(), quote: 'This product changed our business!', author: 'Jane Smith', position: 'CEO, Company Name' },
+          ],
+        } as TestimonialSection;
+      case 'contact':
+        return {
+          ...baseSection,
+          type: 'contact',
+          heading: 'Get In Touch',
+          subheading: 'We\'d love to hear from you. Fill out the form below.',
+          fields: [
+            { id: uuidv4(), type: 'text', label: 'Name', required: true },
+            { id: uuidv4(), type: 'email', label: 'Email', required: true },
+            { id: uuidv4(), type: 'textarea', label: 'Message', required: true },
+          ],
+        } as ContactSection;
       default:
         return {
           ...baseSection,
@@ -109,7 +159,38 @@ const PageSectionEditor: React.FC<PageSectionEditorProps> = ({ initialContent, o
             onDelete={() => handleDeleteSection(section.id)}
           />
         );
-      // Additional cases for other section types would go here
+      case 'cta':
+        return (
+          <CTASectionEditor
+            section={section as CTASection}
+            onChange={(updated) => handleSectionChange(updated)}
+            onDelete={() => handleDeleteSection(section.id)}
+          />
+        );
+      case 'gallery':
+        return (
+          <GallerySectionEditor
+            section={section as GallerySection}
+            onChange={(updated) => handleSectionChange(updated)}
+            onDelete={() => handleDeleteSection(section.id)}
+          />
+        );
+      case 'testimonial':
+        return (
+          <TestimonialSectionEditor
+            section={section as TestimonialSection}
+            onChange={(updated) => handleSectionChange(updated)}
+            onDelete={() => handleDeleteSection(section.id)}
+          />
+        );
+      case 'contact':
+        return (
+          <ContactSectionEditor
+            section={section as ContactSection}
+            onChange={(updated) => handleSectionChange(updated)}
+            onDelete={() => handleDeleteSection(section.id)}
+          />
+        );
       default:
         return (
           <Card className="mb-4">

@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
@@ -84,7 +83,90 @@ const PageSection = ({ section }: { section: Section }) => {
         </div>
       );
       
-    // Add cases for other section types as needed
+    case 'gallery':
+      return (
+        <div className="my-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {section.images.map(image => (
+              <div key={image.id} className="overflow-hidden rounded-lg shadow-sm">
+                <img 
+                  src={image.url} 
+                  alt={image.alt || ''} 
+                  className="w-full h-64 object-cover transform transition-transform duration-300 hover:scale-105"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+
+    case 'testimonial':
+      return (
+        <div className="my-8 py-8 bg-gray-50 rounded-lg">
+          <div className="max-w-4xl mx-auto px-4">
+            <div className="grid grid-cols-1 gap-8">
+              {section.items.map(item => (
+                <div key={item.id} className="bg-white p-6 rounded-lg shadow-sm border">
+                  <div className="flex items-start gap-4">
+                    {item.avatar && (
+                      <img 
+                        src={item.avatar} 
+                        alt={item.author} 
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                    )}
+                    <div>
+                      <blockquote className="text-lg italic mb-4">"{item.quote}"</blockquote>
+                      <div className="font-medium">{item.author}</div>
+                      {item.position && (
+                        <div className="text-sm text-gray-500">{item.position}</div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+
+    case 'contact':
+      return (
+        <div className="my-8 bg-white p-8 rounded-lg shadow-sm border">
+          <h2 className="text-2xl font-bold mb-2">{section.heading}</h2>
+          {section.subheading && (
+            <p className="text-gray-600 mb-6">{section.subheading}</p>
+          )}
+          <form className="space-y-4">
+            {section.fields.map(field => (
+              <div key={field.id}>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {field.label}{field.required && <span className="text-red-500">*</span>}
+                </label>
+                {field.type === 'textarea' ? (
+                  <textarea 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    rows={4}
+                    required={field.required}
+                  />
+                ) : (
+                  <input 
+                    type={field.type === 'email' ? 'email' : 'text'} 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    required={field.required}
+                  />
+                )}
+              </div>
+            ))}
+            <button 
+              type="submit"
+              className="px-4 py-2 bg-brandcentral-accent text-white rounded-md hover:bg-brandcentral-accent/90"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      );
       
     default:
       return null;

@@ -18,7 +18,7 @@ const EditorModeSelector: React.FC<EditorModeSelectorProps> = ({ mode, onChange 
         className="flex items-center gap-1.5"
       >
         <LayoutTemplate className="h-4 w-4" />
-        Visual
+        Visual Editor
       </Button>
       <Button 
         size="sm" 
@@ -27,7 +27,7 @@ const EditorModeSelector: React.FC<EditorModeSelectorProps> = ({ mode, onChange 
         className="flex items-center gap-1.5"
       >
         <Code className="h-4 w-4" />
-        HTML
+        HTML Editor
       </Button>
     </div>
   );
