@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -21,6 +20,7 @@ import { Plus, Search, MoreHorizontal, Edit, Eye, Trash, FileText } from 'lucide
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabase';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import ImportPagesButton from '@/components/admin/ImportPagesButton';
 
 const Pages = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -97,12 +97,15 @@ const Pages = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Pages</h2>
-        <Link to="/admin/pages/new">
-          <Button className="bg-brandcentral-accent hover:bg-brandcentral-accent/90">
-            <Plus className="h-4 w-4 mr-2" />
-            New Page
-          </Button>
-        </Link>
+        <div className="flex gap-2">
+          <ImportPagesButton />
+          <Link to="/admin/pages/new">
+            <Button className="bg-brandcentral-accent hover:bg-brandcentral-accent/90">
+              <Plus className="h-4 w-4 mr-2" />
+              New Page
+            </Button>
+          </Link>
+        </div>
       </div>
 
       <div className="flex items-center space-x-2 border rounded-md p-2">

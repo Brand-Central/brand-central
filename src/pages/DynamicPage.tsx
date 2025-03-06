@@ -4,11 +4,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
-import { toast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 const DynamicPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const { data: page, isLoading, error } = useQuery({
     queryKey: ['page-content', slug],
@@ -44,7 +45,7 @@ const DynamicPage = () => {
       });
       navigate('/not-found', { replace: true });
     }
-  }, [error, navigate]);
+  }, [error, navigate, toast]);
 
   if (isLoading) {
     return (
