@@ -25,7 +25,7 @@ const ContactSectionEditor: React.FC<ContactSectionEditorProps> = ({ section, on
   const handleAddField = () => {
     const newField = {
       id: uuidv4(),
-      type: 'text',
+      type: 'text' as 'text' | 'email' | 'textarea',
       label: 'New Field',
       required: false,
     };
@@ -44,12 +44,24 @@ const ContactSectionEditor: React.FC<ContactSectionEditorProps> = ({ section, on
   };
 
   const handleFieldChange = (fieldId: string, property: string, value: any) => {
-    onChange({
-      ...section,
-      fields: section.fields.map(field => 
-        field.id === fieldId ? { ...field, [property]: value } : field
-      ),
-    });
+    if (property === 'type') {
+      // Ensure the type is one of the allowed values
+      const validValue = value as 'text' | 'email' | 'textarea';
+      
+      onChange({
+        ...section,
+        fields: section.fields.map(field => 
+          field.id === fieldId ? { ...field, [property]: validValue } : field
+        ),
+      });
+    } else {
+      onChange({
+        ...section,
+        fields: section.fields.map(field => 
+          field.id === fieldId ? { ...field, [property]: value } : field
+        ),
+      });
+    }
   };
 
   return (
@@ -125,7 +137,7 @@ const ContactSectionEditor: React.FC<ContactSectionEditorProps> = ({ section, on
                         <Label htmlFor={`field-type-${field.id}`}>Field Type</Label>
                         <Select 
                           value={field.type} 
-                          onValueChange={(value) => handleFieldChange(field.id, 'type', value)}
+                          onValueChange={(value: 'text' | 'email' | 'textarea') => handleFieldChange(field.id, 'type', value)}
                         >
                           <SelectTrigger className="mt-1">
                             <SelectValue placeholder="Select field type" />
