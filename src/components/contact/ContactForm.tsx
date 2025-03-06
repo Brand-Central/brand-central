@@ -4,6 +4,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { supabase } from '@/lib/supabase';
 
 const ContactForm = () => {
   const { toast } = useToast();
@@ -24,15 +25,38 @@ const ContactForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      // Save the submission to Supabase
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert([
+          { 
+            name: formData.name, 
+            email: formData.email, 
+            company: formData.company || null,
+            message: formData.message,
+            status: 'new'
+          }
+        ]);
+      
+      if (error) throw error;
+      
       toast({
         title: "Message sent",
         description: "We'll get back to you as soon as possible.",
       });
+      
       setFormData({ name: '', email: '', company: '', message: '' });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
 
   return (

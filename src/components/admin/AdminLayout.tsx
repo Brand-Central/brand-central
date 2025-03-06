@@ -10,8 +10,8 @@ import {
   Mail, 
   Home, 
   LogOut, 
-  Menu, 
-  X,
+  Menu,
+  MessageSquare,
   PanelLeft
 } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -26,6 +26,7 @@ const AdminLayout = () => {
   const navigationItems = [
     { path: '/admin/dashboard', label: 'Dashboard', icon: <Home className="h-5 w-5" /> },
     { path: '/admin/pages', label: 'Pages', icon: <FileText className="h-5 w-5" /> },
+    { path: '/admin/contact-submissions', label: 'Contact Messages', icon: <MessageSquare className="h-5 w-5" /> },
     { path: '/admin/subscribers', label: 'Subscribers', icon: <Mail className="h-5 w-5" /> },
     { path: '/admin/users', label: 'Users', icon: <Users className="h-5 w-5" /> },
   ];
