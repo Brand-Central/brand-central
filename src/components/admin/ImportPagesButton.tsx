@@ -30,14 +30,12 @@ const ImportPagesButton = () => {
         toast({
           title: "Success",
           description: result.message,
-          icon: <CheckCircle className="h-4 w-4 text-green-500" />,
         });
       } else {
         toast({
           title: "Import failed",
           description: result.message,
           variant: "destructive",
-          icon: <AlertCircle className="h-4 w-4" />,
         });
       }
     } catch (error) {
