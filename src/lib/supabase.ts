@@ -1,6 +1,6 @@
 
 import { createClient } from '@supabase/supabase-js';
-import { Database } from '../types/supabase';
+import type { Database } from '../types/supabase';
 
 // These environment variables must be set in your Supabase project
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://oesqovainsntvqpwqirm.supabase.co';

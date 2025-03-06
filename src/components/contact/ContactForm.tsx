@@ -1,10 +1,11 @@
 
 import { useState } from 'react';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/lib/supabase';
+import { Loader2 } from 'lucide-react';
 
 const ContactForm = () => {
   const { toast } = useToast();
@@ -26,8 +27,10 @@ const ContactForm = () => {
     setIsSubmitting(true);
     
     try {
+      console.log('Submitting form data:', formData);
+      
       // Save the submission to Supabase
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('contact_submissions')
         .insert([
           { 
@@ -37,9 +40,15 @@ const ContactForm = () => {
             message: formData.message,
             status: 'new'
           }
-        ]);
+        ])
+        .select();
       
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
+      
+      console.log('Form submission successful:', data);
       
       toast({
         title: "Message sent",
@@ -131,7 +140,14 @@ const ContactForm = () => {
           disabled={isSubmitting}
           className="w-full py-3 px-6 bg-brandcentral-accent text-white rounded-md hover:bg-brandcentral-accent/90 transition-colors disabled:opacity-70 flex justify-center"
         >
-          {isSubmitting ? 'Sending...' : 'Send Message'}
+          {isSubmitting ? (
+            <>
+              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+              Sending...
+            </>
+          ) : (
+            'Send Message'
+          )}
         </button>
       </form>
     </div>
