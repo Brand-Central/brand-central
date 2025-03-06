@@ -8,7 +8,7 @@ const Index = () => {
   return (
     <main className="pt-24">
       {/* Hero Section */}
-      <section className="py-24 md:py-32 relative overflow-hidden">
+      <section className="py-24 md:py-32 pb-32 md:pb-40 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-radial from-brandcentral-50 to-transparent opacity-50 pointer-events-none"></div>
         <div className="container relative z-10">
           <div className="max-w-4xl mx-auto text-center">
