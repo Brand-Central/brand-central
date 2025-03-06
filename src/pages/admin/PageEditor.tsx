@@ -1,42 +1,21 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { 
-  ArrowLeft, 
-  Save, 
-  Eye, 
-  Clock, 
-  AlertTriangle,
-  Trash,
-  Copy,
-  LayoutTemplate,
-  Code
-} from 'lucide-react';
-import Editor from '@/components/admin/Editor';
-import PageSectionEditor from '@/components/admin/PageSectionEditor';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Clock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  DialogClose,
-} from '@/components/ui/dialog';
 import { format } from 'date-fns';
 import { PageContent } from '@/types/sections';
+
+// Refactored components
+import PageEditorHeader from '@/components/admin/page-editor/PageEditorHeader';
+import PageMetadataForm from '@/components/admin/page-editor/PageMetadataForm';
+import PageContentEditor from '@/components/admin/page-editor/PageContentEditor';
+import PageSettings from '@/components/admin/page-editor/PageSettings';
+import PagePreview from '@/components/admin/page-editor/PagePreview';
 
 const PageEditor = () => {
   const { id } = useParams();
@@ -54,7 +33,6 @@ const PageEditor = () => {
   const [initialSlug, setInitialSlug] = useState('');
   const [currentTab, setCurrentTab] = useState('edit');
   const [editorMode, setEditorMode] = useState<'visual' | 'code'>('visual');
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   // Fetch page data if in edit mode
   const { data: pageData, isLoading } = useQuery({
@@ -230,19 +208,6 @@ const PageEditor = () => {
     saveMutation.mutate();
   };
 
-  const handleDelete = () => {
-    deleteMutation.mutate();
-    setShowDeleteDialog(false);
-  };
-
-  const handleCopySlug = () => {
-    navigator.clipboard.writeText(`${window.location.origin}/${slug}`);
-    toast({
-      title: "URL copied",
-      description: "The page URL has been copied to your clipboard.",
-    });
-  };
-
   const handleContentChange = (newContent: string | PageContent) => {
     if (typeof newContent === 'string') {
       // If it's from the code editor, just update the HTML content
@@ -263,32 +228,12 @@ const PageEditor = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <Button variant="outline" onClick={() => navigate('/admin/pages')}>
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Pages
-        </Button>
-        
-        <div className="flex gap-2">
-          {isEditMode && (
-            <Button variant="outline" asChild>
-              <a href={`/${slug}`} target="_blank" rel="noreferrer">
-                <Eye className="h-4 w-4 mr-2" />
-                Preview
-              </a>
-            </Button>
-          )}
-          
-          <Button 
-            className="bg-brandcentral-accent hover:bg-brandcentral-accent/90"
-            onClick={handleSave}
-            disabled={saveMutation.isPending}
-          >
-            <Save className="h-4 w-4 mr-2" />
-            {saveMutation.isPending ? 'Saving...' : 'Save Page'}
-          </Button>
-        </div>
-      </div>
+      <PageEditorHeader 
+        slug={slug} 
+        isEditMode={isEditMode} 
+        onSave={handleSave} 
+        isSaving={saveMutation.isPending} 
+      />
       
       <Tabs value={currentTab} onValueChange={setCurrentTab} className="space-y-4">
         <div className="flex justify-between items-center">
@@ -308,183 +253,36 @@ const PageEditor = () => {
         <TabsContent value="edit" className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-6">
-              <Card>
-                <CardContent className="p-6">
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="title">Page Title</Label>
-                      <Input
-                        id="title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="Enter page title"
-                        className="mt-1"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="slug">URL Slug</Label>
-                      <div className="flex items-center mt-1">
-                        <span className="text-gray-500 mr-1">/</span>
-                        <Input
-                          id="slug"
-                          value={slug}
-                          onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, ''))}
-                          placeholder="page-url-slug"
-                        />
-                        <Button 
-                          type="button" 
-                          size="icon" 
-                          variant="ghost" 
-                          className="ml-2" 
-                          onClick={handleCopySlug}
-                          title="Copy full URL"
-                        >
-                          <Copy className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <PageMetadataForm 
+                title={title}
+                setTitle={setTitle}
+                slug={slug}
+                setSlug={setSlug}
+              />
               
-              <Card>
-                <CardContent className="p-6">
-                  <div className="flex justify-between items-center mb-4">
-                    <Label className="text-base">Page Content</Label>
-                    <div className="flex gap-2">
-                      <Button 
-                        size="sm" 
-                        variant={editorMode === 'visual' ? 'secondary' : 'outline'} 
-                        onClick={() => setEditorMode('visual')}
-                        className="flex items-center gap-1.5"
-                      >
-                        <LayoutTemplate className="h-4 w-4" />
-                        Visual
-                      </Button>
-                      <Button 
-                        size="sm" 
-                        variant={editorMode === 'code' ? 'secondary' : 'outline'} 
-                        onClick={() => setEditorMode('code')}
-                        className="flex items-center gap-1.5"
-                      >
-                        <Code className="h-4 w-4" />
-                        HTML
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  {editorMode === 'visual' ? (
-                    <PageSectionEditor 
-                      initialContent={content}
-                      onChange={handleContentChange}
-                    />
-                  ) : (
-                    <Editor
-                      initialValue={content.html || ''}
-                      onChange={(html) => handleContentChange(html)}
-                    />
-                  )}
-                </CardContent>
-              </Card>
+              <PageContentEditor 
+                content={content}
+                onChange={handleContentChange}
+                editorMode={editorMode}
+                setEditorMode={setEditorMode}
+              />
             </div>
             
             <div className="space-y-6">
-              <Card>
-                <CardContent className="p-6">
-                  <h3 className="text-lg font-medium mb-4">Page Settings</h3>
-                  
-                  <div className="space-y-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label htmlFor="published">Published</Label>
-                        <p className="text-sm text-gray-500">Make this page visible to the public</p>
-                      </div>
-                      <Switch
-                        id="published"
-                        checked={isPublished}
-                        onCheckedChange={setIsPublished}
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="meta-description">Meta Description</Label>
-                      <p className="text-sm text-gray-500 mb-2">Brief description for search engines</p>
-                      <Textarea
-                        id="meta-description"
-                        value={metaDescription}
-                        onChange={(e) => setMetaDescription(e.target.value)}
-                        placeholder="Enter meta description"
-                        className="h-24"
-                      />
-                      {metaDescription && metaDescription.length > 160 && (
-                        <p className="mt-1 text-sm text-amber-600 flex items-center">
-                          <AlertTriangle className="h-3 w-3 mr-1" />
-                          Meta descriptions should be 160 characters or less
-                        </p>
-                      )}
-                    </div>
-                    
-                    {isEditMode && (
-                      <div className="pt-4 border-t">
-                        <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-                          <DialogTrigger asChild>
-                            <Button variant="outline" className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50">
-                              <Trash className="h-4 w-4 mr-2" />
-                              Delete Page
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent>
-                            <DialogHeader>
-                              <DialogTitle>Delete Page</DialogTitle>
-                              <DialogDescription>
-                                Are you sure you want to delete this page? This action cannot be undone.
-                              </DialogDescription>
-                            </DialogHeader>
-                            <DialogFooter>
-                              <DialogClose asChild>
-                                <Button variant="outline">Cancel</Button>
-                              </DialogClose>
-                              <Button variant="destructive" onClick={handleDelete}>
-                                Delete
-                              </Button>
-                            </DialogFooter>
-                          </DialogContent>
-                        </Dialog>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
+              <PageSettings 
+                isPublished={isPublished}
+                setIsPublished={setIsPublished}
+                metaDescription={metaDescription}
+                setMetaDescription={setMetaDescription}
+                isEditMode={isEditMode}
+                onDelete={() => deleteMutation.mutate()}
+              />
             </div>
           </div>
         </TabsContent>
         
         <TabsContent value="preview">
-          <Card>
-            <CardContent className="p-6">
-              <div className="max-w-4xl mx-auto">
-                <h1 className="text-3xl font-bold mb-4">{title || 'Untitled Page'}</h1>
-                
-                {content.html ? (
-                  <div 
-                    className="prose max-w-none border-t pt-4"
-                    dangerouslySetInnerHTML={{ __html: content.html }}
-                  />
-                ) : content.sections && content.sections.length > 0 ? (
-                  <div className="border-t pt-4">
-                    <div className="text-gray-500 mb-4">
-                      Page has {content.sections.length} section(s). Preview will render in live mode.
-                    </div>
-                  </div>
-                ) : (
-                  <div className="text-gray-500 italic border-t pt-4">
-                    No content yet. Start editing to see a preview.
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+          <PagePreview title={title} content={content} />
         </TabsContent>
       </Tabs>
     </div>
