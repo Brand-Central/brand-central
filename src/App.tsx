@@ -1,4 +1,5 @@
 
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -65,7 +66,7 @@ const App = () => (
                 <Header />
                 <PageTransition>
                   <Routes>
-                    <Route path="/" element={<Index />} />
+                    <Route index element={<Index />} />
                     <Route path="/services" element={<Services />} />
                     <Route path="/case-studies" element={<CaseStudies />} />
                     <Route path="/case-study-1" element={<CaseStudy1 />} />

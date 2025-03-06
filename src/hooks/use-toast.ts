@@ -1,3 +1,4 @@
+
 import * as React from "react"
 
 import { ToastActionElement, type ToastProps } from "@/components/ui/toast"
@@ -31,7 +32,7 @@ type ActionType = typeof actionTypes
 type Action =
   | {
       type: ActionType["ADD_TOAST"]
-      toast: Omit<ToasterToast, "id">
+      toast: Omit<ToasterToast, "id"> & { id?: string }
     }
   | {
       type: ActionType["UPDATE_TOAST"]
@@ -59,7 +60,7 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         toasts: [
           ...state.toasts,
-          { id: genId(), ...action.toast },
+          { ...(action.toast as ToasterToast), id: action.toast.id || genId() },
         ].slice(0, TOAST_LIMIT),
       }
 
