@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
+import { toast } from '@/hooks/use-toast';
 
 const DynamicPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -24,6 +25,7 @@ const DynamicPage = () => {
         .single();
       
       if (error) {
+        console.error('Error fetching page:', error);
         throw error;
       }
       
@@ -35,6 +37,11 @@ const DynamicPage = () => {
 
   useEffect(() => {
     if (error) {
+      toast({
+        title: "Page not found",
+        description: "The page you're looking for doesn't exist or isn't published yet.",
+        variant: "destructive"
+      });
       navigate('/not-found', { replace: true });
     }
   }, [error, navigate]);
@@ -56,7 +63,7 @@ const DynamicPage = () => {
   return (
     <>
       <Helmet>
-        <title>{page?.title} | Brandcentral</title>
+        <title>{page?.title || 'Page'} | Brandcentral</title>
         <meta name="description" content={page?.meta_description || ''} />
       </Helmet>
 

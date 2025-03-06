@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -39,7 +40,7 @@ const PageEditor = () => {
   const { toast } = useToast();
   const { user } = useAuth();
   const queryClient = useQueryClient();
-  const isEditMode = id !== 'new';
+  const isEditMode = id !== undefined && id !== 'new';
 
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
@@ -54,7 +55,7 @@ const PageEditor = () => {
   const { data: pageData, isLoading } = useQuery({
     queryKey: ['page', id],
     queryFn: async () => {
-      if (!isEditMode) return null;
+      if (!isEditMode || !id) return null;
       
       const { data, error } = await supabase
         .from('pages')
@@ -63,6 +64,7 @@ const PageEditor = () => {
         .single();
       
       if (error) {
+        console.error('Error fetching page:', error);
         toast({
           title: "Error",
           description: `Failed to load page: ${error.message}`,
@@ -112,7 +114,7 @@ const PageEditor = () => {
         updated_at: new Date().toISOString()
       };
       
-      if (isEditMode) {
+      if (isEditMode && id) {
         const { data, error } = await supabase
           .from('pages')
           .update(pageData)
@@ -120,7 +122,10 @@ const PageEditor = () => {
           .select()
           .single();
           
-        if (error) throw error;
+        if (error) {
+          console.error('Error updating page:', error);
+          throw error;
+        }
         return data;
       } else {
         const { data, error } = await supabase
@@ -129,13 +134,16 @@ const PageEditor = () => {
           .select()
           .single();
           
-        if (error) throw error;
+        if (error) {
+          console.error('Error creating page:', error);
+          throw error;
+        }
         return data;
       }
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['pages'] });
-      queryClient.invalidateQueries({ queryKey: ['page', id] });
+      if (id) queryClient.invalidateQueries({ queryKey: ['page', id] });
       queryClient.invalidateQueries({ queryKey: ['page-content', slug] });
       
       toast({
@@ -145,11 +153,11 @@ const PageEditor = () => {
           : "The new page has been created successfully.",
       });
       
-      if (!isEditMode) {
+      if (!isEditMode && data?.id) {
         navigate(`/admin/pages/edit/${data.id}`);
       }
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error('Error saving page:', error);
       toast({
         title: "Error",
@@ -162,7 +170,7 @@ const PageEditor = () => {
   // Delete page mutation
   const deleteMutation = useMutation({
     mutationFn: async () => {
-      if (!isEditMode) return;
+      if (!isEditMode || !id) return;
       
       const { error } = await supabase
         .from('pages')
@@ -181,7 +189,7 @@ const PageEditor = () => {
       
       navigate('/admin/pages');
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error('Error deleting page:', error);
       toast({
         title: "Error",

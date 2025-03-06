@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -37,6 +37,11 @@ const Pages = () => {
         .order('updated_at', { ascending: false });
       
       if (error) {
+        toast({
+          title: "Error loading pages",
+          description: error.message,
+          variant: "destructive"
+        });
         throw new Error(error.message);
       }
       
@@ -131,7 +136,7 @@ const Pages = () => {
               {filteredPages.map(page => (
                 <TableRow key={page.id}>
                   <TableCell className="font-medium">{page.title}</TableCell>
-                  <TableCell className="text-sm text-gray-500">{page.slug}</TableCell>
+                  <TableCell className="text-sm text-gray-500">/{page.slug}</TableCell>
                   <TableCell>
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                       page.is_published ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
@@ -158,7 +163,7 @@ const Pages = () => {
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                          <a href={page.slug} target="_blank" rel="noreferrer" className="flex items-center cursor-pointer">
+                          <a href={`/${page.slug}`} target="_blank" rel="noreferrer" className="flex items-center cursor-pointer">
                             <Eye className="h-4 w-4 mr-2" />
                             View
                           </a>

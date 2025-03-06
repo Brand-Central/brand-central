@@ -29,6 +29,7 @@ import PageEditor from "./pages/admin/PageEditor";
 import Subscribers from "./pages/admin/Subscribers";
 import Users from "./pages/admin/Users";
 import ContactSubmissions from "./pages/admin/ContactSubmissions";
+import CreateFirstPage from "./pages/admin/CreateFirstPage";
 
 // Add NProgress for page transitions
 import NProgress from 'nprogress';
@@ -80,6 +81,7 @@ const App = () => (
               <Route path="pages" element={<Pages />} />
               <Route path="pages/new" element={<PageEditor />} />
               <Route path="pages/edit/:id" element={<PageEditor />} />
+              <Route path="pages/create-first" element={<CreateFirstPage />} />
               <Route path="subscribers" element={<Subscribers />} />
               <Route path="users" element={<Users />} />
               <Route path="contact-submissions" element={<ContactSubmissions />} />
