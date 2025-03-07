@@ -32,6 +32,22 @@ const Header = () => {
     setIsMenuOpen(false);
   }, [location]);
 
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMenuOpen]);
+
+  const handleMenuItemClick = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
     <header
       className={cn(
@@ -95,36 +111,45 @@ const Header = () => {
         {/* Mobile Menu */}
         <div
           className={cn(
-            'md:hidden fixed inset-0 bg-white z-[5] flex flex-col items-center justify-center transition-all duration-300 ease-in-out',
+            'md:hidden fixed inset-0 bg-white z-[5] flex flex-col items-center justify-center overflow-hidden',
             isMenuOpen 
               ? 'opacity-100 pointer-events-auto' 
               : 'opacity-0 pointer-events-none'
           )}
+          style={{
+            transition: 'opacity 0.3s ease-in-out',
+          }}
         >
-          <nav className="flex flex-col items-center space-y-6 py-8">
+          <nav className="flex flex-col items-center space-y-6 py-8 w-full px-6">
             {menuItems.map((item, idx) => (
               <Link
                 key={item.path}
                 to={item.path}
                 className={cn(
-                  'text-lg font-medium transition-custom',
+                  'text-lg font-medium w-full text-center py-3',
                   location.pathname === item.path 
                     ? 'text-brandcentral-accent' 
                     : 'text-brandcentral-800',
-                  isMenuOpen ? 'animate-fade-in' : 'animate-fade-out',
                 )}
-                style={{ animationDelay: `${idx * 50}ms` }}
+                onClick={handleMenuItemClick}
+                style={{
+                  opacity: isMenuOpen ? 1 : 0,
+                  transform: isMenuOpen ? 'translateY(0)' : 'translateY(20px)',
+                  transition: `opacity 0.4s ease-out ${idx * 0.1}s, transform 0.4s ease-out ${idx * 0.1}s`,
+                }}
               >
                 {item.title}
               </Link>
             ))}
             <Link
               to="/contact"
-              className={cn(
-                'mt-4 px-6 py-3 text-white bg-brandcentral-accent rounded-md shadow-sm transition-custom',
-                isMenuOpen ? 'animate-fade-in' : 'animate-fade-out'
-              )}
-              style={{ animationDelay: '300ms' }}
+              className="mt-4 px-6 py-3 text-white bg-brandcentral-accent rounded-md shadow-sm w-full text-center"
+              onClick={handleMenuItemClick}
+              style={{
+                opacity: isMenuOpen ? 1 : 0,
+                transform: isMenuOpen ? 'translateY(0)' : 'translateY(20px)',
+                transition: 'opacity 0.4s ease-out 0.5s, transform 0.4s ease-out 0.5s',
+              }}
             >
               Get in Touch
             </Link>
