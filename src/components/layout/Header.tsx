@@ -111,18 +111,20 @@ const Header = () => {
         {/* Mobile Menu */}
         <div
           className={cn(
-            'md:hidden fixed inset-0 bg-white z-[5]',
+            'md:hidden fixed bg-white z-[5]',
             isMenuOpen 
               ? 'opacity-100 pointer-events-auto' 
               : 'opacity-0 pointer-events-none'
           )}
           style={{
             transition: 'opacity 0.3s ease-in-out',
-            top: 0, // Ensure the menu starts from the top of viewport
+            position: 'fixed',
+            top: 0,
             left: 0,
             right: 0,
             bottom: 0,
-            position: 'fixed',
+            width: '100vw',
+            height: '100vh',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
