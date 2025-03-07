@@ -11,7 +11,7 @@ const BrandsTicker = () => {
       <div className="container relative z-10">
         <p className="text-center text-sm text-brandcentral-500 uppercase tracking-wider mb-6 font-medium">Trusted by industry leaders</p>
         <div className="flex justify-around items-center flex-wrap gap-8 md:gap-16">
-          {['Walmart', 'Amazon', 'Target', 'Best Buy', 'Home Depot'].map((brand, index) => (
+          {['eBay', 'Amazon', 'Target', 'Best Buy', 'Home Depot'].map((brand, index) => (
             <div key={index} className="flex items-center group hover:scale-105 transition-transform">
               <div className="flex items-center justify-center bg-white w-8 h-8 rounded-full shadow-md mr-2 group-hover:bg-brandcentral-accent/10">
                 <Check className="w-5 h-5 text-brandcentral-accent" />
