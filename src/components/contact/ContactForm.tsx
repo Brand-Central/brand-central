@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
@@ -41,7 +40,8 @@ const ContactForm = () => {
             status: 'new'
           }
         ])
-        .select();
+        .select()
+        .single();
       
       if (error) {
         console.error('Supabase error:', error);
@@ -49,6 +49,23 @@ const ContactForm = () => {
       }
       
       console.log('Form submission successful:', data);
+      
+      // Send email notification
+      try {
+        const { error: functionError } = await supabase.functions.invoke('send-contact-notification', {
+          body: { record: data }
+        });
+        
+        if (functionError) {
+          console.error('Email notification error:', functionError);
+          // Don't throw here - we still want to show success to user even if email fails
+        } else {
+          console.log('Email notification sent successfully');
+        }
+      } catch (emailError) {
+        console.error('Failed to send email notification:', emailError);
+        // Don't throw here - we still want to show success to user even if email fails
+      }
       
       toast({
         title: "Message sent",
