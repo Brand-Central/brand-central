@@ -1,4 +1,3 @@
-
 import { MapPin, Mail, Phone, Clock } from 'lucide-react';
 
 const ContactInfo = () => {
@@ -11,8 +10,8 @@ const ContactInfo = () => {
             <Mail className="w-5 h-5 mt-1 text-brandcentral-accent mr-4" />
             <div>
               <p className="font-medium mb-1">Email</p>
-              <a href="mailto:hello@brandcentral.com" className="text-brandcentral-500 hover:text-brandcentral-accent transition-colors">
-                hello@brandcentral.com
+              <a href="mailto:Sales@BrandCentralinc.com" className="text-brandcentral-500 hover:text-brandcentral-accent transition-colors">
+                Sales@BrandCentralinc.com
               </a>
             </div>
           </div>

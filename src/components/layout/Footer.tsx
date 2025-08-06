@@ -35,9 +35,9 @@ const Footer = () => {
                 <Phone className="w-4 h-4 mr-2" />
                 <span>(253) 666-8753</span>
               </a>
-              <a href="mailto:hello@brandcentral.com" className="inline-flex items-center text-brandcentral-300 hover:text-brandcentral-accent transition-custom">
+              <a href="mailto:Sales@BrandCentralinc.com" className="inline-flex items-center text-brandcentral-300 hover:text-brandcentral-accent transition-custom">
                 <Mail className="w-4 h-4 mr-2" />
-                <span>hello@brandcentral.com</span>
+                <span>Sales@BrandCentralinc.com</span>
               </a>
             </div>
           </div>
